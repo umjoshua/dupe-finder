@@ -102,15 +102,18 @@ func main() {
 	for _, f := range duplicates {
 		if len(f) > 1 {
 			count++
-			fmt.Println(f[1], ": Duplicate found:-> ", strings.Join(f, ", "))
+			fmt.Println()
+			fmt.Println(len(f)-1, "Duplicate(s) found for", f[1], "\n Duplicates: ", strings.Join(f, ", "))
 		}
 	}
 
 	if count == 0 {
+		fmt.Println("No duplicate files found")
 		return
 	}
 
-	fmt.Printf("Delete %v duplicates? (Y/n): ", count)
+	fmt.Println()
+	fmt.Printf("Delete duplicates of %v file(s)? (Y/n): ", count)
 	var input string
 	fmt.Scan(&input)
 
