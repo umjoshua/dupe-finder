@@ -25,9 +25,9 @@ func findDuplicates(targetPath string) (map[string][]string, error) {
 			}
 			hashChan <- fileHash
 			hashChan <- file
+			wg.Done()
 		}
 
-		wg.Done()
 	}()
 
 	go func() {
@@ -38,7 +38,6 @@ func findDuplicates(targetPath string) (map[string][]string, error) {
 	}()
 
 	err := filepath.Walk(targetPath, func(fileName string, info os.FileInfo, err error) error {
-		wg.Add(1)
 		if err != nil {
 			return err
 		}
@@ -50,6 +49,7 @@ func findDuplicates(targetPath string) (map[string][]string, error) {
 			return err
 		}
 
+		wg.Add(1)
 		fileChan <- fileName
 
 		return nil
