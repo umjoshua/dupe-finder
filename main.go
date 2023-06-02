@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -96,10 +97,32 @@ func main() {
 		fmt.Println("Couldn't Complete")
 		return
 	}
+
+	count := 0
 	for _, f := range duplicates {
 		if len(f) > 1 {
-			for _, fi := range f {
-				fmt.Println(fi)
+			count++
+			fmt.Println(f[1], ": Duplicate found:-> ", strings.Join(f, ", "))
+		}
+	}
+
+	if count == 0 {
+		return
+	}
+
+	fmt.Printf("Delete %v duplicates? (Y/n): ", count)
+	var input string
+	fmt.Scan(&input)
+
+	if input == "Y" || input == "y" {
+		for _, f := range duplicates {
+			if len(f) > 1 {
+				for _, fi := range f[1:] {
+					err = os.Remove(fi)
+					if err != nil {
+						fmt.Println("Couldn't delete ", fi)
+					}
+				}
 			}
 		}
 	}
